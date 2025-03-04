@@ -14,19 +14,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             background-color: black;
             overflow: hidden;
         }
         video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 90vw;
-            height: 90vh;
+            height: 85vh;
             object-fit: cover;
             background-color: black;
+        }
+        .copyright {
+            color: white;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -35,5 +38,6 @@
         <source src="your-video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    <div class="copyright">&copy; 2025 LatentMap.ai. All rights reserved.</div>
 </body>
 </html>
