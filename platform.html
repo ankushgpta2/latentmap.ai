@@ -3,9 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platform - LatentMap.ai</title>
+    <title>Blog - LatentMap.ai</title>
     <style>
-        /* Keep all styles the same from index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            font-family: 'SF Pro Display', Arial, sans-serif;
+            font-size: 2rem;
+            text-align: center;
+        }
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+            background-color: black;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0 20px;
+            font-family: 'SF Pro Display', Arial, sans-serif;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            transform: translateX(-50%);
+            opacity: 0.5;
+        }
+        .navbar a.active::after,
+        .navbar a:hover::after {
+            width: 100%;
+            opacity: 1;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #1d1d1f;
+            color: #86868b;
+            font-size: 0.9rem;
+            font-family: 'SF Pro Display', Arial, sans-serif;
+            text-align: center;
+            padding: 15px 0;
+            z-index: 10;
+        }
+        .footer a {
+            color: #86868b;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -21,12 +96,13 @@
 </head>
 <body>
     <nav class="navbar">
-        <a href="platform.html" class="active">Platform</a>
+        <a href="platform.html" class="active>Platform</a>
         <a href="team.html">Team</a>
         <a href="careers.html">Careers</a>
+        <a href="blog.html">Blog</a>
     </nav>
-    <div class="content">
-        <h1 style="color: white; text-align: center;">Coming Soon</h1>
+    <div>
+        Coming Soon
     </div>
     <div class="footer">
         &copy; 2025 LatentMap.ai. All rights reserved. |
@@ -38,4 +114,3 @@
     </div>
 </body>
 </html>
-
