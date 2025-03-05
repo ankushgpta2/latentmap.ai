@@ -34,7 +34,7 @@
         }
         .navbar .home-button {
             position: absolute;
-            left: 10px;
+            left: 20px;
             height: 40px;
         }
         .navbar .home-button img {
@@ -42,12 +42,17 @@
             width: auto;
             max-width: 100px;
         }
+        .navbar-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px; /* Increased spacing between menu items */
+        }
         .navbar a {
             color: white;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 500;
-            margin: 0 10px;
             position: relative;
             padding-bottom: 5px;
         }
@@ -111,13 +116,15 @@
             .navbar {
                 padding: 10px 5px;
             }
+            .navbar-links {
+                gap: 20px; /* Reduced gap for smaller screens */
+            }
             .navbar a {
-                font-size: 0.8rem;
-                margin: 0 5px;
+                font-size: 0.9rem;
             }
             .navbar .home-button {
                 height: 30px;
-                left: 5px;
+                left: 10px;
             }
             .footer {
                 flex-direction: column;
@@ -135,14 +142,29 @@
         }
         @media screen and (max-width: 480px) {
             .navbar {
-                justify-content: space-between;
+                flex-direction: column;
+                align-items: flex-start;
                 padding: 10px;
-            }
-            .navbar a:not(.home-button) {
-                display: none;
             }
             .navbar .home-button {
                 position: static;
+                align-self: center;
+                margin-bottom: 10px;
+            }
+            .navbar-links {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                display: none; /* Hidden by default on mobile */
+            }
+            .navbar-links.show {
+                display: flex; /* Show when 'show' class is added */
+            }
+            .navbar a {
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
             }
         }
     </style>
@@ -156,27 +178,22 @@
                 }
             });
 
-            // Mobile menu toggle for small screens
+            // Mobile menu toggle
             const homeButton = document.querySelector('.home-button');
-            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
             
             homeButton.addEventListener('click', function() {
                 if (window.innerWidth <= 480) {
-                    navbar.classList.toggle('mobile-menu-open');
-                    
-                    if (navbar.classList.contains('mobile-menu-open')) {
-                        links.forEach(link => {
-                            if (!link.classList.contains('home-button')) {
-                                link.style.display = 'block';
-                            }
-                        });
-                    } else {
-                        links.forEach(link => {
-                            if (!link.classList.contains('home-button')) {
-                                link.style.display = 'none';
-                            }
-                        });
-                    }
+                    navbarLinks.classList.toggle('show');
+                }
+            });
+
+            // Close mobile menu if clicked outside
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 480 && 
+                    !homeButton.contains(event.target) && 
+                    !navbarLinks.contains(event.target)) {
+                    navbarLinks.classList.remove('show');
                 }
             });
         });
@@ -185,10 +202,12 @@
 <body>
     <nav class="navbar">
         <a href="/" class="home-button"><img src="home-button.gif" alt="Home"></a>
-        <a href="platform">Platform</a>
-        <a href="team">Team</a>
-        <a href="careers">Careers</a>
-        <a href="blog">Blog</a>
+        <div class="navbar-links">
+            <a href="platform">Platform</a>
+            <a href="team">Team</a>
+            <a href="careers">Careers</a>
+            <a href="blog">Blog</a>
+        </div>
     </nav>
     <video autoplay muted playsinline loop>
         <source src="your-video.mp4" type="video/mp4">
