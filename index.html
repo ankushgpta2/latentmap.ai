@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LatentMap.ai</title>
     <style>
         * {
@@ -18,28 +18,36 @@
             height: 100vh;
             background-color: black;
             overflow: hidden;
+            font-family: 'SF Pro Display', Arial, sans-serif;
         }
         .navbar {
-            position: absolute;
+            position: fixed;
             top: 0;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px 0;
+            padding: 15px 10px;
             background-color: black;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 10;
         }
-        .navbar .home-button { position: absolute; left: 20px; height: 60px; }
-        .navbar .home-button img { height: 100%; width: auto; }
+        .navbar .home-button {
+            position: absolute;
+            left: 10px;
+            height: 40px;
+        }
+        .navbar .home-button img {
+            height: 100%;
+            width: auto;
+            max-width: 100px;
+        }
         .navbar a {
             color: white;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            margin: 0 20px;
-            font-family: 'SF Pro Display', Arial, sans-serif;
+            margin: 0 10px;
             position: relative;
             padding-bottom: 5px;
         }
@@ -71,37 +79,71 @@
             transform: translate(-50%, -50%);
         }
         .footer {
-            position: absolute;
+            position: fixed;
             bottom: 0;
             width: 100%;
             background-color: #1d1d1f;
             color: #86868b;
-            font-size: 0.9rem;
-            font-family: 'SF Pro Display', Arial, sans-serif;
+            font-size: 0.8rem;
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            padding: 15px 20px;
+            padding: 10px;
             z-index: 10;
         }
-        .footer-left {
-            flex: none; /* Prevents it from taking extra space */
-            white-space: nowrap;
-        }
-        .footer-links {
-            margin-left: 20px; /* Moves links closer to the copyright */
-            white-space: nowrap;
-        }
+        .footer-left,
+        .footer-links,
         .footer-right {
-            margin-left: auto; /* Pushes "United States" to the right */
+            flex: 1;
             white-space: nowrap;
+            text-align: center;
+            margin: 5px 0;
         }
         .footer a {
             color: #86868b;
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 5px;
         }
         .footer a:hover {
             text-decoration: underline;
+        }
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 10px 5px;
+            }
+            .navbar a {
+                font-size: 0.8rem;
+                margin: 0 5px;
+            }
+            .navbar .home-button {
+                height: 30px;
+                left: 5px;
+            }
+            .footer {
+                flex-direction: column;
+                font-size: 0.7rem;
+                padding: 10px 5px;
+            }
+            .footer-left,
+            .footer-links,
+            .footer-right {
+                margin: 3px 0;
+            }
+            video {
+                object-fit: cover;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .navbar {
+                justify-content: space-between;
+                padding: 10px;
+            }
+            .navbar a:not(.home-button) {
+                display: none;
+            }
+            .navbar .home-button {
+                position: static;
+            }
         }
     </style>
     <script>
@@ -111,6 +153,30 @@
             links.forEach(link => {
                 if (currentLocation.includes(link.getAttribute("href"))) {
                     link.classList.add("active");
+                }
+            });
+
+            // Mobile menu toggle for small screens
+            const homeButton = document.querySelector('.home-button');
+            const navbar = document.querySelector('.navbar');
+            
+            homeButton.addEventListener('click', function() {
+                if (window.innerWidth <= 480) {
+                    navbar.classList.toggle('mobile-menu-open');
+                    
+                    if (navbar.classList.contains('mobile-menu-open')) {
+                        links.forEach(link => {
+                            if (!link.classList.contains('home-button')) {
+                                link.style.display = 'block';
+                            }
+                        });
+                    } else {
+                        links.forEach(link => {
+                            if (!link.classList.contains('home-button')) {
+                                link.style.display = 'none';
+                            }
+                        });
+                    }
                 }
             });
         });
@@ -124,7 +190,7 @@
         <a href="careers">Careers</a>
         <a href="blog">Blog</a>
     </nav>
-    <video autoplay muted playsinline>
+    <video autoplay muted playsinline loop>
         <source src="your-video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
