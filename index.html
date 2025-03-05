@@ -79,16 +79,21 @@
             font-size: 0.9rem;
             font-family: 'SF Pro Display', Arial, sans-serif;
             display: flex;
-            justify-content: flex-start;  /* Aligns content to the left */
             align-items: center;
             padding: 15px 20px;
             z-index: 10;
         }
         .footer-left {
-            flex: none; /* Prevents it from taking unnecessary space */
+            flex: none; /* Prevents it from taking extra space */
+            white-space: nowrap;
         }
         .footer-links {
-            margin-left: 20px; /* Moves links closer to copyright */
+            margin-left: 20px; /* Moves links closer to the copyright */
+            white-space: nowrap;
+        }
+        .footer-right {
+            margin-left: auto; /* Pushes "United States" to the right */
+            white-space: nowrap;
         }
         .footer a {
             color: #86868b;
