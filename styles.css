@@ -1,0 +1,32 @@
+/* styles.css */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #1d1d1f;
+    color: #86868b;
+    font-size: 0.9rem;
+    font-family: 'SF Pro Display', Arial, sans-serif;
+    padding: 15px 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.footer-left {
+    text-align: left;
+    flex: 1;
+}
+
+.footer-links {
+    text-align: center;
+    flex: 2;
+    margin-top: 5px;  /* Adds vertical spacing between the copyright and links */
+}
+
+.footer-right {
+    margin-left: auto;
+    text-align: right;
+}

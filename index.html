@@ -31,10 +31,8 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 10;
         }
-        .navbar .home-button { position: absolute; left: 20px; height: 60px;
-        }
-        .navbar .home-button img { height: 100%; width: auto;
-        }
+        .navbar .home-button { position: absolute; left: 20px; height: 60px; }
+        .navbar .home-button img { height: 100%; width: auto; }
         .navbar a {
             color: white;
             text-decoration: none;
@@ -72,6 +70,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        /* Footer Styling */
         .footer {
             position: absolute;
             bottom: 0;
@@ -80,9 +79,23 @@
             color: #86868b;
             font-size: 0.9rem;
             font-family: 'SF Pro Display', Arial, sans-serif;
-            text-align: center;
-            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
             z-index: 10;
+        }
+        .footer-left {
+            text-align: left;
+            flex: 1;
+        }
+        .footer-links {
+            text-align: center;
+            flex: 2;
+            margin-top: 5px;  /* Adds vertical spacing between the copyright and links */
+        }
+        .footer-right {
+            text-align: right;
         }
         .footer a {
             color: #86868b;
@@ -126,6 +139,9 @@
             <a href="terms.html">Terms of Use</a> |
             <a href="legal.html">Legal</a> |
             <a href="sitemap.html">Site Map</a>
+        </div>
+        <div class="footer-right">
+            United States
         </div>
     </div>    
 </body>
