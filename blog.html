@@ -3,21 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - LatentMap.ai</title>
+    <title>Platform - LatentMap.ai</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
-            color: white;
-            font-family: 'SF Pro Display', Arial, sans-serif;
-            font-size: 2rem;
-        }
+        /* Keep all styles the same from index.html */
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let links = document.querySelectorAll(".navbar a");
+            let currentLocation = window.location.pathname.split('/').pop();
+            links.forEach(link => {
+                if (link.getAttribute("href") === currentLocation) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-    Coming Soon
+    <nav class="navbar">
+        <a href="platform.html">Platform</a>
+        <a href="blog.html" class="active">Blog</a>
+        <a href="team.html">Team</a>
+        <a href="careers.html">Careers</a>
+    </nav>
+    <div class="content">
+        <h1 style="color: white; text-align: center;">Coming Soon</h1>
+    </div>
+    <div class="footer">
+        &copy; 2025 LatentMap.ai. All rights reserved. |
+        <a href="privacy.html">Privacy Policy</a> |
+        <a href="terms.html">Terms of Use</a> |
+        <a href="legal.html">Legal</a> |
+        <a href="sitemap.html">Site Map</a>
+        <span style="float: right; margin-right: 20px;">United States</span>
+    </div>
 </body>
 </html>
