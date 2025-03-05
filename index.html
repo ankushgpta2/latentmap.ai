@@ -70,7 +70,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        /* Footer Styling */
         .footer {
             position: absolute;
             bottom: 0;
@@ -80,22 +79,16 @@
             font-size: 0.9rem;
             font-family: 'SF Pro Display', Arial, sans-serif;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;  /* Aligns content to the left */
             align-items: center;
             padding: 15px 20px;
             z-index: 10;
         }
         .footer-left {
-            text-align: left;
-            flex: 1;
+            flex: none; /* Prevents it from taking unnecessary space */
         }
         .footer-links {
-            text-align: center;
-            flex: 2;
-            margin-top: 5px;  /* Adds vertical spacing between the copyright and links */
-        }
-        .footer-right {
-            text-align: right;
+            margin-left: 20px; /* Moves links closer to copyright */
         }
         .footer a {
             color: #86868b;
