@@ -29,6 +29,7 @@
             padding: 15px 0;
             background-color: black;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
         }
         .navbar a {
             color: white;
@@ -58,10 +59,14 @@
             opacity: 1;
         }
         video {
-            width: 90vw;
-            height: 85vh;
-            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
             background-color: black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         .footer {
             position: absolute;
@@ -73,6 +78,7 @@
             font-family: 'SF Pro Display', Arial, sans-serif;
             text-align: center;
             padding: 15px 0;
+            z-index: 10;
         }
         .footer a {
             color: #86868b;
