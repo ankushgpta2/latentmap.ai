@@ -25,8 +25,10 @@
             width: 100%;
             display: flex;
             justify-content: center;
+            align-items: center;
             padding: 15px 0;
             background-color: black;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         .navbar a {
             color: white;
@@ -35,6 +37,25 @@
             font-weight: 500;
             margin: 0 20px;
             font-family: 'SF Pro Display', Arial, sans-serif;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            transform: translateX(-50%);
+            opacity: 0.5;
+        }
+        .navbar a.active::after,
+        .navbar a:hover::after {
+            width: 100%;
+            opacity: 1;
         }
         video {
             width: 90vw;
@@ -62,11 +83,21 @@
             text-decoration: underline;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let links = document.querySelectorAll(".navbar a");
+            let currentLocation = window.location.pathname;
+            links.forEach(link => {
+                if (currentLocation.includes(link.getAttribute("href"))) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <nav class="navbar">
         <a href="platform.html">Platform</a>
-        <a href="blog.html">Blog</a>
         <a href="team.html">Team</a>
         <a href="careers.html">Careers</a>
     </nav>
@@ -84,4 +115,3 @@
     </div>
 </body>
 </html>
-
