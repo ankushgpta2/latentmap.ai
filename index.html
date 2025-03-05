@@ -26,10 +26,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px 0;
+            padding: 20px 0;
             background-color: black;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 10;
+        }
+        .navbar .home-button {
+            position: absolute;
+            left: 20px;
+            height: 40px;
+        }
+        .navbar .home-button img {
+            height: 100%;
         }
         .navbar a {
             color: white;
@@ -64,7 +72,7 @@
             object-fit: contain;
             background-color: black;
             position: absolute;
-            top: 50%;
+            top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -103,6 +111,7 @@
 </head>
 <body>
     <nav class="navbar">
+        <a href="index.html" class="home-button"><img src="home-button.gif" alt="Home"></a>
         <a href="platform.html">Platform</a>
         <a href="team.html">Team</a>
         <a href="careers.html">Careers</a>
