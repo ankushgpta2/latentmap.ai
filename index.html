@@ -62,6 +62,53 @@
             background-color: black;
             display: block;
         }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+            background-color: black;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+        .navbar .home-button img, .navbar .right-button img {
+            height: 50px;
+            width: auto;
+        }
+        .navbar-links {
+            display: flex;
+            gap: 40px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #1d1d1f;
+            color: #86868b;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            z-index: 10;
+        }
+        .footer a {
+            color: #86868b;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
