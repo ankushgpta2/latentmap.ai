@@ -46,6 +46,16 @@
                 width: auto;
                 max-width: 100px;
             }
+            .navbar .right-button {
+                position: absolute;
+                right: 20px;
+                height: 60px;
+            }
+            .navbar .right-button img {
+                height: 100%;
+                width: auto;
+                max-width: 100px;
+            }
             .navbar-links {
                 display: flex;
                 justify-content: center;
@@ -102,6 +112,9 @@
                 height: 100%;
                 width: auto;
                 max-width: 100px;
+            }
+            .navbar .right-button {
+                display: none; /* Hide right button on mobile */
             }
             .dropdown-menu {
                 position: relative;
@@ -212,6 +225,9 @@
             <a href="careers">Careers</a>
             <a href="blog">Blog</a>
         </div>
+
+        <!-- Right side GIF button -->
+        <a href="/contact" class="right-button"><img src="contact-button.gif" alt="Contact"></a>
 
         <!-- Mobile dropdown menu (only visible on mobile) -->
         <div class="dropdown-menu">
