@@ -534,36 +534,15 @@
         .shake {
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
+
+        /* Hide all content initially until authentication is verified */
+        .content-hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="home-button"><img src="home-button.gif" alt="Home"></a>
-        
-        <!-- Desktop navigation (will be hidden on mobile) -->
-        <div class="navbar-links">
-            <a href="platform.html" class="nav-link">Platform</a>
-            <a href="team.html" class="nav-link">Team</a>
-            <a href="careers.html" class="nav-link">Careers</a>
-            <a href="blog.html" class="nav-link">Blog</a>
-        </div>
-
-        <!-- Right side GIF button -->
-        <a href="contact.html" class="right-button"><img src="contact-button.gif" alt="Contact"></a>
-
-        <!-- Mobile dropdown menu (only visible on mobile) -->
-        <div class="dropdown-menu">
-            <button class="dropdown-toggle">☰</button>
-            <div class="dropdown-content">
-                <a href="platform.html">Platform</a>
-                <a href="team.html">Team</a>
-                <a href="careers.html">Careers</a>
-                <a href="blog.html">Blog</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Login Screen (now positioned below navbar) -->
+    <!-- Login Screen (positioned below navbar) -->
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-logo">
@@ -580,87 +559,125 @@
             </div>
         </div>
     </div>
-    
-    <!-- Main Content (now always present in DOM, just hidden by the login overlay) -->
-    <div class="main-content" id="mainContent">
-        <!-- Full-screen banner section with animated text -->
-        <section class="banner-section">
-            <div class="welcome-text">
-                <h1><span class="blue-text">Welcome</span> <span class="gray-text">to Latent</span> <span class="orange-text">Map.ai</span></h1>
-                <h2>Experience the Future of AI Navigation</h2>
-            </div>
-            <div class="scroll-indicator">
-                <p>Scroll down</p>
-                <div class="scroll-arrow"></div>
-            </div>
-        </section>
 
-        <!-- Video section that appears when scrolling down -->
-        <section class="video-section">
-            <video autoplay muted playsinline loop>
-                <source src="your-video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </section>
-    </div>
+    <!-- All site content - initially hidden -->
+    <div class="site-content content-hidden" id="siteContent">
+        <nav class="navbar">
+            <a href="index.html" class="home-button"><img src="home-button.gif" alt="Home"></a>
+            
+            <!-- Desktop navigation (will be hidden on mobile) -->
+            <div class="navbar-links">
+                <a href="platform.html" class="nav-link">Platform</a>
+                <a href="team.html" class="nav-link">Team</a>
+                <a href="careers.html" class="nav-link">Careers</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+            </div>
 
-    <div class="footer">
-        <div class="footer-left">
-            Copyright &copy; 2025 LatentMap Inc. All rights reserved.
+            <!-- Right side GIF button -->
+            <a href="contact.html" class="right-button"><img src="contact-button.gif" alt="Contact"></a>
+
+            <!-- Mobile dropdown menu (only visible on mobile) -->
+            <div class="dropdown-menu">
+                <button class="dropdown-toggle">☰</button>
+                <div class="dropdown-content">
+                    <a href="platform.html">Platform</a>
+                    <a href="team.html">Team</a>
+                    <a href="careers.html">Careers</a>
+                    <a href="blog.html">Blog</a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Full-screen banner section with animated text -->
+            <section class="banner-section">
+                <div class="welcome-text">
+                    <h1><span class="blue-text">Welcome</span> <span class="gray-text">to Latent</span> <span class="orange-text">Map.ai</span></h1>
+                    <h2>Experience the Future of AI Navigation</h2>
+                </div>
+                <div class="scroll-indicator">
+                    <p>Scroll down</p>
+                    <div class="scroll-arrow"></div>
+                </div>
+            </section>
+
+            <!-- Video section that appears when scrolling down -->
+            <section class="video-section">
+                <video autoplay muted playsinline loop>
+                    <source src="your-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </section>
         </div>
-        <div class="footer-links">
-            <a href="privacy.html">Privacy Policy</a> |
-            <a href="terms.html">Terms of Use</a> |
-            <a href="legal.html">Legal</a> |
-            <a href="sitemap.html">Site Map</a>
-        </div>
-        <div class="footer-right">
-            United States
+
+        <div class="footer">
+            <div class="footer-left">
+                Copyright &copy; 2025 LatentMap Inc. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a> |
+                <a href="terms.html">Terms of Use</a> |
+                <a href="legal.html">Legal</a> |
+                <a href="sitemap.html">Site Map</a>
+            </div>
+            <div class="footer-right">
+                United States
+            </div>
         </div>
     </div>
     
     <script>
-        // Password authentication script
+        // Authentication and website initialization script
         document.addEventListener("DOMContentLoaded", function() {
             const correctPassword = "project-latent-map-v1"; // Change this to your desired password
             const loginScreen = document.getElementById("loginScreen");
-            const mainContent = document.getElementById("mainContent");
+            const siteContent = document.getElementById("siteContent");
             const passwordInput = document.getElementById("passwordInput");
             const loginButton = document.getElementById("loginButton");
             const loginError = document.getElementById("loginError");
             
-            // Check if user has already authenticated
-            const isAuthenticated = localStorage.getItem("authenticated") === "true";
-            
-            // If not authenticated, show login screen regardless of the URL
-            if (!isAuthenticated) {
-                showLoginScreen();
-            } else {
-                // Set expiration time for authentication (24 hours from last successful login)
-                const authExpiration = parseInt(localStorage.getItem("authExpiration") || "0");
-                const currentTime = new Date().getTime();
+            // Function to check authentication on every page
+            function checkAuthentication() {
+                const isAuthenticated = localStorage.getItem("authenticated") === "true";
                 
-                // If authentication has expired, show login screen
-                if (currentTime > authExpiration) {
-                    localStorage.removeItem("authenticated");
-                    localStorage.removeItem("authExpiration");
+                if (!isAuthenticated) {
+                    // Not authenticated, show login screen
                     showLoginScreen();
+                    return false;
                 } else {
-                    hideLoginScreen();
+                    // Check if authentication has expired (24 hours)
+                    const authExpiration = parseInt(localStorage.getItem("authExpiration") || "0");
+                    const currentTime = new Date().getTime();
+                    
+                    if (currentTime > authExpiration) {
+                        // Authentication expired, clear and show login
+                        localStorage.removeItem("authenticated");
+                        localStorage.removeItem("authExpiration");
+                        showLoginScreen();
+                        return false;
+                    } else {
+                        // Valid authentication, allow access
+                        hideLoginScreen();
+                        return true;
+                    }
                 }
             }
             
+            // Initial authentication check when page loads
+            checkAuthentication();
+            
             // Login button click handler
-            loginButton.addEventListener("click", checkPassword);
+            loginButton.addEventListener("click", attemptLogin);
             
             // Enter key press handler
             passwordInput.addEventListener("keyup", function(event) {
                 if (event.key === "Enter") {
-                    checkPassword();
+                    attemptLogin();
                 }
             });
             
-            function checkPassword() {
+            function attemptLogin() {
                 if (passwordInput.value === correctPassword) {
                     // Set persistent authentication in localStorage
                     localStorage.setItem("authenticated", "true");
@@ -684,12 +701,12 @@
             
             function showLoginScreen() {
                 loginScreen.style.display = "flex";
-                // No need to hide mainContent anymore
+                siteContent.classList.add("content-hidden");
             }
             
             function hideLoginScreen() {
-                // Just hide login screen, content is already visible beneath
                 loginScreen.style.display = "none";
+                siteContent.classList.remove("content-hidden");
                 
                 // Initialize website scripts
                 initializeWebsite();
@@ -757,6 +774,20 @@
                     }
                 });
             }
+
+            // Protect all links to ensure they require authentication
+            document.addEventListener('click', function(e) {
+                // Check if clicking on an internal link
+                if (e.target.tagName === 'A' && e.target.href && 
+                    e.target.href.indexOf(window.location.origin) === 0 && 
+                    !e.target.href.includes('#')) {
+                    
+                    // If not authenticated, prevent navigation and show login
+                    if (!checkAuthentication()) {
+                        e.preventDefault();
+                    }
+                }
+            });
         });
     </script>
 </body>
