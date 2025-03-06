@@ -633,8 +633,24 @@
             const loginError = document.getElementById("loginError");
             
             // Check if user has already authenticated
-            if (sessionStorage.getItem("authenticated") === "true") {
-                showWebsite();
+            const isAuthenticated = localStorage.getItem("authenticated") === "true";
+            
+            // If not authenticated, show login screen regardless of the URL
+            if (!isAuthenticated) {
+                showLoginScreen();
+            } else {
+                // Set expiration time for authentication (24 hours from last successful login)
+                const authExpiration = parseInt(localStorage.getItem("authExpiration") || "0");
+                const currentTime = new Date().getTime();
+                
+                // If authentication has expired, show login screen
+                if (currentTime > authExpiration) {
+                    localStorage.removeItem("authenticated");
+                    localStorage.removeItem("authExpiration");
+                    showLoginScreen();
+                } else {
+                    showWebsite();
+                }
             }
             
             // Login button click handler
@@ -649,8 +665,13 @@
             
             function checkPassword() {
                 if (passwordInput.value === correctPassword) {
-                    // Set session storage to remember authentication
-                    sessionStorage.setItem("authenticated", "true");
+                    // Set persistent authentication in localStorage instead of sessionStorage
+                    localStorage.setItem("authenticated", "true");
+                    
+                    // Set authentication expiration (24 hours from now)
+                    const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+                    localStorage.setItem("authExpiration", expirationTime.toString());
+                    
                     showWebsite();
                 } else {
                     // Show error message
@@ -662,6 +683,11 @@
                         loginError.classList.remove("shake");
                     }, 500);
                 }
+            }
+            
+            function showLoginScreen() {
+                loginScreen.style.display = "flex";
+                mainContent.style.display = "none";
             }
             
             function showWebsite() {
@@ -732,6 +758,18 @@
                     const linkPath = link.getAttribute('href');
                     if (currentLocation.includes(linkPath) && linkPath !== '/') {
                         link.classList.add('active');
+                    }
+                });
+                
+                // Modify navigation links to preserve authentication when navigating
+                document.querySelectorAll('a').forEach(link => {
+                    // Only modify internal links that don't already have event listeners
+                    const href = link.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('#') && !link.hasAttribute('data-modified')) {
+                        link.setAttribute('data-modified', 'true');
+                        link.addEventListener('click', function(e) {
+                            // Allow navigation to proceed normally - authentication is now checked on each page load
+                        });
                     }
                 });
             }
