@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
         body {
-            font-family: 'SF Pro Display', Arial, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: black;
             color: white;
             overflow-x: hidden;
@@ -23,7 +23,7 @@
             padding-bottom: 60px;
         }
         
-        /* Login Screen Styles */
+        /* Login Screen Styles - Updated for more sophisticated look */
         .login-screen {
             position: fixed;
             top: 0;
@@ -36,76 +36,85 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            background: radial-gradient(circle at center, #0c0c0c 0%, #000000 100%);
         }
         
         .login-container {
-            background-color: rgba(29, 29, 31, 0.9);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            background-color: rgba(28, 28, 30, 0.7);
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
         .login-logo {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
         
         .login-logo h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 10px;
             letter-spacing: -1px;
+            font-weight: 700;
         }
         
         .login-logo h1 .blue-text {
             color: #4da6ff;
         }
         
-        .login-logo h1 .gray-text {
-            color: white;
-        }
-        
         .login-logo h1 .orange-text {
             color: #ff7846;
         }
         
+        .login-logo p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
+            margin-top: 15px;
+            font-weight: 300;
+        }
+        
         .login-form input {
             width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
             color: white;
             font-size: 1rem;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
         
         .login-form input:focus {
             outline: none;
-            border-color: #4da6ff;
-            box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
         }
         
         .login-form button {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #4da6ff, #ff7846);
-            border: none;
-            border-radius: 6px;
+            padding: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
             color: white;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
         }
         
         .login-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(255, 120, 70, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
         }
         
         .login-error {
@@ -116,9 +125,9 @@
         }
         
         .login-footer {
-            margin-top: 30px;
+            margin-top: 40px;
             font-size: 0.8rem;
-            color: #86868b;
+            color: rgba(255, 255, 255, 0.4);
         }
         
         .main-content {
@@ -517,15 +526,26 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* Adding a subtle shake animation for login errors */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
+    <!-- Updated Login Screen -->
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-logo">
-                <h1><span class="blue-text">Latent</span><span class="gray-text">.</span><span class="orange-text">Map</span></h1>
-                <p>Authorized Access Only</p>
+                <h1><span class="blue-text">Latent</span><span class="orange-text">Map.ai</span></h1>
+                <p>Limited Access. Coming Soon</p>
             </div>
             <div class="login-form">
                 <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="off">
@@ -533,7 +553,7 @@
                 <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
             </div>
             <div class="login-footer">
-                &copy; 2025 Latent Map Inc. All rights reserved.
+                &copy; 2025 LatentMap Inc. All rights reserved.
             </div>
         </div>
     </div>
@@ -569,7 +589,7 @@
         <!-- Full-screen banner section with animated text -->
         <section class="banner-section">
             <div class="welcome-text">
-                <h1><span class="blue-text">Welcome</span> <span class="gray-text">to Latent</span> <span class="orange-text">Map</span></h1>
+                <h1><span class="blue-text">Welcome</span> <span class="gray-text">to Latent</span> <span class="orange-text">Map.ai</span></h1>
                 <h2>Experience the Future of AI Navigation</h2>
             </div>
             <div class="scroll-indicator">
@@ -588,7 +608,7 @@
 
         <div class="footer">
             <div class="footer-left">
-                Copyright &copy; 2025 Latent Map Inc. All rights reserved.
+                Copyright &copy; 2025 LatentMap Inc. All rights reserved.
             </div>
             <div class="footer-links">
                 <a href="privacy.html">Privacy Policy</a> |
