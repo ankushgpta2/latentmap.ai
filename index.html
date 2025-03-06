@@ -23,19 +23,20 @@
             padding-bottom: 60px;
         }
         
-        /* Login Screen Styles - Updated for more sophisticated look */
+        /* Login Screen Styles - Updated to overlay only the content */
         .login-screen {
             position: fixed;
-            top: 0;
+            top: 90px; /* Adjusted to appear below navbar */
             left: 0;
             width: 100%;
-            height: 100%;
+            /* Height adjusted to account for footer and navbar */
+            height: calc(100% - 150px);
             background-color: black;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 100;
             background: radial-gradient(circle at center, #0c0c0c 0%, #000000 100%);
         }
         
@@ -130,10 +131,6 @@
             color: rgba(255, 255, 255, 0.4);
         }
         
-        .main-content {
-            display: none;
-        }
-        
         /* Original Website Styles */
         .navbar {
             position: fixed;
@@ -147,7 +144,7 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
+            z-index: 200; /* Higher than login screen */
             transition: all 0.3s ease;
         }
         
@@ -494,7 +491,7 @@
             flex-wrap: wrap;
             align-items: center;
             padding: 10px;
-            z-index: 10;
+            z-index: 200; /* Higher than login screen */
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         .footer-left,
@@ -540,7 +537,33 @@
     </style>
 </head>
 <body>
-    <!-- Updated Login Screen -->
+    <nav class="navbar">
+        <a href="index.html" class="home-button"><img src="home-button.gif" alt="Home"></a>
+        
+        <!-- Desktop navigation (will be hidden on mobile) -->
+        <div class="navbar-links">
+            <a href="platform.html" class="nav-link">Platform</a>
+            <a href="team.html" class="nav-link">Team</a>
+            <a href="careers.html" class="nav-link">Careers</a>
+            <a href="blog.html" class="nav-link">Blog</a>
+        </div>
+
+        <!-- Right side GIF button -->
+        <a href="contact.html" class="right-button"><img src="contact-button.gif" alt="Contact"></a>
+
+        <!-- Mobile dropdown menu (only visible on mobile) -->
+        <div class="dropdown-menu">
+            <button class="dropdown-toggle">☰</button>
+            <div class="dropdown-content">
+                <a href="platform.html">Platform</a>
+                <a href="team.html">Team</a>
+                <a href="careers.html">Careers</a>
+                <a href="blog.html">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Screen (now positioned below navbar) -->
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-logo">
@@ -558,34 +581,8 @@
         </div>
     </div>
     
-    <!-- Main Content (this is your original website) -->
+    <!-- Main Content (now always present in DOM, just hidden by the login overlay) -->
     <div class="main-content" id="mainContent">
-        <nav class="navbar">
-            <a href="/" class="home-button"><img src="home-button.gif" alt="Home"></a>
-            
-            <!-- Desktop navigation (will be hidden on mobile) -->
-            <div class="navbar-links">
-                <a href="platform" class="nav-link">Platform</a>
-                <a href="team" class="nav-link">Team</a>
-                <a href="careers" class="nav-link">Careers</a>
-                <a href="blog" class="nav-link">Blog</a>
-            </div>
-
-            <!-- Right side GIF button -->
-            <a href="/contact" class="right-button"><img src="contact-button.gif" alt="Contact"></a>
-
-            <!-- Mobile dropdown menu (only visible on mobile) -->
-            <div class="dropdown-menu">
-                <button class="dropdown-toggle">☰</button>
-                <div class="dropdown-content">
-                    <a href="platform">Platform</a>
-                    <a href="team">Team</a>
-                    <a href="careers">Careers</a>
-                    <a href="blog">Blog</a>
-                </div>
-            </div>
-        </nav>
-
         <!-- Full-screen banner section with animated text -->
         <section class="banner-section">
             <div class="welcome-text">
@@ -605,20 +602,20 @@
                 Your browser does not support the video tag.
             </video>
         </section>
+    </div>
 
-        <div class="footer">
-            <div class="footer-left">
-                Copyright &copy; 2025 LatentMap Inc. All rights reserved.
-            </div>
-            <div class="footer-links">
-                <a href="privacy.html">Privacy Policy</a> |
-                <a href="terms.html">Terms of Use</a> |
-                <a href="legal.html">Legal</a> |
-                <a href="sitemap.html">Site Map</a>
-            </div>
-            <div class="footer-right">
-                United States
-            </div>
+    <div class="footer">
+        <div class="footer-left">
+            Copyright &copy; 2025 LatentMap Inc. All rights reserved.
+        </div>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Use</a> |
+            <a href="legal.html">Legal</a> |
+            <a href="sitemap.html">Site Map</a>
+        </div>
+        <div class="footer-right">
+            United States
         </div>
     </div>
     
@@ -649,7 +646,7 @@
                     localStorage.removeItem("authExpiration");
                     showLoginScreen();
                 } else {
-                    showWebsite();
+                    hideLoginScreen();
                 }
             }
             
@@ -665,14 +662,14 @@
             
             function checkPassword() {
                 if (passwordInput.value === correctPassword) {
-                    // Set persistent authentication in localStorage instead of sessionStorage
+                    // Set persistent authentication in localStorage
                     localStorage.setItem("authenticated", "true");
                     
                     // Set authentication expiration (24 hours from now)
                     const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000);
                     localStorage.setItem("authExpiration", expirationTime.toString());
                     
-                    showWebsite();
+                    hideLoginScreen();
                 } else {
                     // Show error message
                     loginError.style.display = "block";
@@ -687,13 +684,12 @@
             
             function showLoginScreen() {
                 loginScreen.style.display = "flex";
-                mainContent.style.display = "none";
+                // No need to hide mainContent anymore
             }
             
-            function showWebsite() {
-                // Hide login screen and show website content
+            function hideLoginScreen() {
+                // Just hide login screen, content is already visible beneath
                 loginScreen.style.display = "none";
-                mainContent.style.display = "block";
                 
                 // Initialize website scripts
                 initializeWebsite();
@@ -758,18 +754,6 @@
                     const linkPath = link.getAttribute('href');
                     if (currentLocation.includes(linkPath) && linkPath !== '/') {
                         link.classList.add('active');
-                    }
-                });
-                
-                // Modify navigation links to preserve authentication when navigating
-                document.querySelectorAll('a').forEach(link => {
-                    // Only modify internal links that don't already have event listeners
-                    const href = link.getAttribute('href');
-                    if (href && !href.startsWith('http') && !href.startsWith('#') && !link.hasAttribute('data-modified')) {
-                        link.setAttribute('data-modified', 'true');
-                        link.addEventListener('click', function(e) {
-                            // Allow navigation to proceed normally - authentication is now checked on each page load
-                        });
                     }
                 });
             }
