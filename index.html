@@ -11,252 +11,88 @@
             box-sizing: border-box;
         }
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            background-color: black;
-            overflow: hidden;
             font-family: 'SF Pro Display', Arial, sans-serif;
+            background-color: black;
+            color: white;
+            overflow-x: hidden;
         }
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
+        .hero {
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 15px 10px;
-            background-color: black;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 10;
+            text-align: center;
+            position: relative;
         }
-        /* Desktop navigation styles */
-        @media screen and (min-width: 481px) {
-            .navbar .home-button {
-                position: absolute;
-                left: 20px;
-                height: 60px;
-            }
-            .navbar .home-button img {
-                height: 100%;
-                width: auto;
-                max-width: 100px;
-            }
-            .navbar .right-button {
-                position: absolute;
-                right: 20px;
-                height: 60px;
-            }
-            .navbar .right-button img {
-                height: 100%;
-                width: auto;
-                max-width: 100px;
-            }
-            .navbar-links {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 40px;
-            }
-            .navbar a {
-                color: white;
-                text-decoration: none;
-                font-size: 1rem;
-                font-weight: 500;
-                position: relative;
-                padding-bottom: 5px;
-            }
-            .navbar a::after {
-                content: '';
-                position: absolute;
-                left: 50%;
-                bottom: 0;
-                width: 0;
-                height: 2px;
-                background-color: white;
-                transition: all 0.3s ease-in-out;
-                transform: translateX(-50%);
-                opacity: 0.5;
-            }
-            .navbar a.active::after,
-            .navbar a:hover::after {
-                width: 100%;
-                opacity: 1;
-            }
-            .dropdown-menu {
-                display: none;
-            }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #00aaff, #ff5500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeIn 3s ease-in-out forwards;
         }
-
-        /* Mobile-specific styles */
-        @media screen and (max-width: 480px) {
-            .navbar-links {
-                display: none;
-            }
-            .navbar {
-                padding: 10px;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .navbar .home-button {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                height: 40px;
-            }
-            .navbar .home-button img {
-                height: 100%;
-                width: auto;
-                max-width: 100px;
-            }
-            .navbar .right-button {
-                display: none; /* Hide right button on mobile */
-            }
-            .dropdown-menu {
-                position: relative;
-                margin-left: auto;
-            }
-            .dropdown-toggle {
-                background: none;
-                border: none;
-                color: white;
-                font-size: 1.5rem;
-                cursor: pointer;
-                padding: 10px;
-            }
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                right: 0;
-                background-color: rgba(30, 30, 30, 0.9);
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
-            }
-            .dropdown-content a {
-                color: white;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: right;
-            }
-            .dropdown-content a:hover {
-                background-color: rgba(50, 50, 50, 0.9);
-            }
-            .dropdown-menu.active .dropdown-content {
-                display: block;
-            }
+        .hero p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 4s ease-in-out forwards;
         }
-
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .scroll-down {
+            position: absolute;
+            bottom: 20px;
+            font-size: 1rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
         video {
             width: 100vw;
             height: 100vh;
             object-fit: contain;
             background-color: black;
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #1d1d1f;
-            color: #86868b;
-            font-size: 0.8rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            padding: 10px;
-            z-index: 10;
-        }
-        .footer-left,
-        .footer-links,
-        .footer-right {
-            flex: 1;
-            white-space: nowrap;
-            text-align: center;
-            margin: 5px 0;
-        }
-        .footer a {
-            color: #86868b;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-        .footer a:hover {
-            text-decoration: underline;
+            display: block;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dropdownToggle = document.querySelector('.dropdown-toggle');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
-            
-            dropdownToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdownMenu.classList.toggle('active');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function() {
-                dropdownMenu.classList.remove('active');
-            });
-
-            // Prevent dropdown close when clicking inside
-            document.querySelector('.dropdown-content').addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-    </script>
 </head>
 <body>
     <nav class="navbar">
         <a href="/" class="home-button"><img src="home-button.gif" alt="Home"></a>
-        
-        <!-- Desktop navigation (will be hidden on mobile) -->
         <div class="navbar-links">
             <a href="platform">Platform</a>
             <a href="team">Team</a>
             <a href="careers">Careers</a>
             <a href="blog">Blog</a>
         </div>
-
-        <!-- Right side GIF button -->
         <a href="/contact" class="right-button"><img src="contact-button.gif" alt="Contact"></a>
-
-        <!-- Mobile dropdown menu (only visible on mobile) -->
-        <div class="dropdown-menu">
-            <button class="dropdown-toggle">☰</button>
-            <div class="dropdown-content">
-                <a href="platform">Platform</a>
-                <a href="team">Team</a>
-                <a href="careers">Careers</a>
-                <a href="blog">Blog</a>
-            </div>
-        </div>
     </nav>
-
+    <section class="hero">
+        <h1>Welcome to Latent Map</h1>
+        <p>Experience the Future of AI Navigation</p>
+        <div class="scroll-down">▼ Scroll Down</div>
+    </section>
     <video autoplay muted playsinline loop>
         <source src="your-video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-
     <div class="footer">
-        <div class="footer-left">
-            Copyright &copy; 2025 Latent Map Inc. All rights reserved.
-        </div>
+        <div class="footer-left">Copyright &copy; 2025 Latent Map Inc. All rights reserved.</div>
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy</a> |
             <a href="terms.html">Terms of Use</a> |
             <a href="legal.html">Legal</a> |
             <a href="sitemap.html">Site Map</a>
         </div>
-        <div class="footer-right">
-            United States
-        </div>
-    </div>    
+        <div class="footer-right">United States</div>
+    </div>
 </body>
 </html>
