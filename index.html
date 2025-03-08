@@ -915,4 +915,94 @@
                 loginButton.style.opacity = "0.7";
                 
                 // Simulate processing time for more tech feel
-                setTimeout(function
+                setTimeout(function() {
+                    if (passwordInput.value === correctPassword) {
+                        // Successful login
+                        localStorage.setItem("authenticated", "true");
+                        // Set expiration to 24 hours from now
+                        const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+                        localStorage.setItem("authExpiration", expirationTime.toString());
+                        
+                        // Show success animation and redirect
+                        loginButton.innerHTML = "<span>Access Granted</span>";
+                        loginButton.style.backgroundColor = "rgba(77, 166, 255, 0.3)";
+                        
+                        // Fade out login screen with slight delay for better UX
+                        setTimeout(hideLoginScreen, 1000);
+                    } else {
+                        // Failed login
+                        passwordInput.value = "";
+                        loginError.style.display = "block";
+                        loginButton.innerHTML = "<span>Initialize System</span>";
+                        loginButton.style.opacity = "1";
+                        
+                        // Add shake animation to container
+                        const loginContainer = document.querySelector('.login-container');
+                        loginContainer.classList.add('shake');
+                        
+                        // Remove shake class after animation completes
+                        setTimeout(function() {
+                            loginContainer.classList.remove('shake');
+                        }, 500);
+                    }
+                }, 1500); // Processing time delay
+            }
+            
+            function showLoginScreen() {
+                loginScreen.style.display = "flex";
+                siteContent.classList.add("content-hidden");
+            }
+            
+            function hideLoginScreen() {
+                loginScreen.style.display = "none";
+                siteContent.classList.remove("content-hidden");
+                initializeSite();
+            }
+            
+            // Initialize site elements after successful authentication
+            function initializeSite() {
+                // Navbar scroll effect
+                window.addEventListener('scroll', function() {
+                    const navbar = document.querySelector('.navbar');
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+                
+                // Mobile menu toggle
+                const dropdownToggle = document.querySelector('.dropdown-toggle');
+                const dropdownMenu = document.querySelector('.dropdown-menu');
+                
+                if (dropdownToggle) {
+                    dropdownToggle.addEventListener('click', function() {
+                        dropdownMenu.classList.toggle('active');
+                        document.body.style.overflow = dropdownMenu.classList.contains('active') ? 'hidden' : '';
+                    });
+                }
+                
+                // Scroll indicator click event
+                const scrollIndicator = document.querySelector('.scroll-indicator');
+                if (scrollIndicator) {
+                    scrollIndicator.addEventListener('click', function() {
+                        const videoSection = document.querySelector('.video-section');
+                        videoSection.scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+                
+                // Attempt to load video source dynamically if needed
+                const video = document.querySelector('video');
+                if (video && !video.src) {
+                    const source = video.querySelector('source');
+                    if (source && source.getAttribute('src') === 'your-video.mp4') {
+                        // Replace with actual video URL if available
+                        // source.setAttribute('src', 'https://your-actual-video-url.mp4');
+                        // video.load();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
