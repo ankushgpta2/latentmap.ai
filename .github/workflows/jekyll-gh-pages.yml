@@ -22,13 +22,11 @@ jobs:
           bundler-cache: true
 
 
-      - name: Install Jekyll and Bundler
-        run: |
-          gem install bundler
-          bundle install
+      - name: Install Jekyll
+        run: gem install jekyll
 
       - name: Build Jekyll Site
-        run: bundle exec jekyll build --destination ./_site
+        run: jekyll build --destination ./_site
 
       - name: Push Built Site to Public Repo
         run: |
