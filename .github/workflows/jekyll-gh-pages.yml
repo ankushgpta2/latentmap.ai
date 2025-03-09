@@ -30,7 +30,7 @@ jobs:
 
       - name: Push Built Site to Public Repo
         run: |
-          git clone https://github.com/ankushgpta2/latentmap.io.deploy.git public-repo
+          git clone https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git public-repo
           rm -rf public-repo/*
           cp -r _site/* public-repo/
           cd public-repo
@@ -38,4 +38,4 @@ jobs:
           git config user.email "actions@github.com"
           git add .
           git commit -m "Deploy Jekyll site"
-          git clone https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git public-repo
+          git push https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git main
