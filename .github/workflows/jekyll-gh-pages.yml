@@ -30,12 +30,21 @@ jobs:
 
       - name: Push Built Site to Public Repo
         run: |
-          git clone https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.ai.deploy.git public-repo
-          rm -rf public-repo/*
+          # Clone the public repo
+          git clone https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git public-repo
+      
+          # Remove everything in the public repo except the .git folder (to retain history)
+          rm -rf public-repo/* public-repo/.??*
+      
+          # Copy only the built files from _site/ to the public repo
           cp -r _site/* public-repo/
+      
           cd public-repo
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+      
+          # Add only the new built site files
           git add .
           git commit -m "Deploy Jekyll site"
-          git push https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.ai.deploy.git main
+          git push https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git main
+      
