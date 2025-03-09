@@ -38,4 +38,4 @@ jobs:
           git config user.email "actions@github.com"
           git add .
           git commit -m "Deploy Jekyll site"
-          git push https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git main
+          git clone https://x-access-token:${{ secrets.PAT }}@github.com/ankushgpta2/latentmap.io.deploy.git public-repo
