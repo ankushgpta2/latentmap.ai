@@ -21,9 +21,9 @@ export default async function HomePage() {
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] mr-3 align-middle" />
             Frontier Research Lab · Founded {SITE.founded}
           </div>
-          <h1 className="display text-[clamp(2.5rem,8vw,5.25rem)] text-[var(--color-fg)] break-words">
+          <h1 className="display-sans text-[clamp(1.75rem,7.5vw,4rem)] text-[var(--color-fg)] whitespace-nowrap">
             {SITE.name}{" "}
-            <span className="text-[var(--color-fg-subtle)] whitespace-nowrap">
+            <span className="text-[var(--color-fg-subtle)]">
               ({SITE.shortName})
             </span>
           </h1>

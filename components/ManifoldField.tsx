@@ -141,6 +141,65 @@ export function ManifoldField() {
       drawn[i] = { sx: 0, sy: 0, d: 0, s: 0, a: 0 };
     }
 
+    /* ------------------------------------------------------------------ */
+    /* Local structures                                                   */
+    /* Random hotspots on the manifold that grow, hold, and dissolve —    */
+    /* each one deforms the local geometry (visible bulge in the dots)    */
+    /* and is marked with a soft halo on top.                             */
+    /* ------------------------------------------------------------------ */
+    type Structure = {
+      theta: number;
+      phi: number;
+      cosTheta: number;
+      sinTheta: number;
+      cosPhi: number;
+      sinPhi: number;
+      birth: number;
+      life: number;     // total lifespan in seconds
+      amp: number;      // peak radial bump (fraction of unit radius)
+      sigma2: number;   // squared angular falloff
+      cool: boolean;    // warm bone vs. cool grey-blue accent
+    };
+    const MAX_STRUCTURES = narrow ? 3 : 5;
+    const SPAWN_RATE = 0.55; // attempted spawns per second
+    const structures: Structure[] = [];
+
+    function spawnStructure() {
+      // Uniform on the sphere: cos(phi) ~ U(-1,1) since phi ∈ [0, π].
+      const phi = Math.acos(1 - 2 * Math.random());
+      const theta = Math.random() * Math.PI * 2;
+      const sigma = 0.28 + Math.random() * 0.18; // angular st. dev.
+      structures.push({
+        theta,
+        phi,
+        cosTheta: Math.cos(theta),
+        sinTheta: Math.sin(theta),
+        cosPhi: Math.cos(phi),
+        sinPhi: Math.sin(phi),
+        birth: t,
+        life: 3.5 + Math.random() * 3.5,
+        amp: 0.13 + Math.random() * 0.08,
+        sigma2: sigma * sigma,
+        cool: Math.random() < 0.45,
+      });
+    }
+
+    // Smooth rise → hold → fall envelope so structures "build" and dissolve.
+    function envelope(age01: number): number {
+      if (age01 <= 0 || age01 >= 1) return 0;
+      if (age01 < 0.3) {
+        const x = age01 / 0.3;
+        return x * x * (3 - 2 * x); // smoothstep in
+      }
+      if (age01 > 0.7) {
+        const x = (1 - age01) / 0.3;
+        return x * x * (3 - 2 * x); // smoothstep out
+      }
+      return 1;
+    }
+
+    let spawnAccum = 0;
+
     function frame(now: number) {
       rafId = requestAnimationFrame(frame);
       const dt = Math.min(0.05, (now - lastT) / 1000);
@@ -172,6 +231,26 @@ export function ManifoldField() {
       const mInf = mouse.current;
       const sigma2 = radius * radius * 0.5;
 
+      // Maintain local structures. Reap expired, then attempt spawns
+      // (Poisson-ish via accumulator) until the cap is reached.
+      for (let k = structures.length - 1; k >= 0; k--) {
+        if (t - structures[k].birth >= structures[k].life) structures.splice(k, 1);
+      }
+      if (!reduceMotion) {
+        spawnAccum += dt * SPAWN_RATE;
+        while (spawnAccum >= 1 && structures.length < MAX_STRUCTURES) {
+          spawnAccum -= 1;
+          spawnStructure();
+        }
+        if (spawnAccum > 1) spawnAccum = 1;
+      }
+
+      // Precompute envelope per active structure so the inner loop is tight.
+      const sEnv = new Array(structures.length);
+      for (let k = 0; k < structures.length; k++) {
+        sEnv[k] = envelope((t - structures[k].birth) / structures[k].life);
+      }
+
       for (let i = 0; i < base.length; i++) {
         const { theta, phi, sinPhi, cosPhi } = base[i];
 
@@ -180,7 +259,20 @@ export function ManifoldField() {
         const h1 = Math.sin(3 * theta + t * 0.9) * Math.cos(2 * phi + t * 0.4);
         const h2 = Math.sin(5 * phi - t * 0.6) * Math.cos(theta + t * 0.3);
         const h3 = Math.sin(theta * 2 + phi * 3 + t * 0.55);
-        const r3 = 1 + 0.1 * h1 + 0.06 * h2 + 0.04 * h3;
+        let r3 = 1 + 0.1 * h1 + 0.06 * h2 + 0.04 * h3;
+
+        // Local bumps from active structures. Use (1 − cosΔ) ≈ Δ²/2 as a
+        // cheap stand-in for angular distance squared, avoiding acos().
+        for (let k = 0; k < structures.length; k++) {
+          const env = sEnv[k];
+          if (env <= 0.001) continue;
+          const s = structures[k];
+          const cosD =
+            cosPhi * s.cosPhi +
+            sinPhi * s.sinPhi * (s.cosTheta * Math.cos(theta) + s.sinTheta * Math.sin(theta));
+          const dist2 = 2 * (1 - cosD);
+          r3 += env * s.amp * Math.exp(-dist2 / s.sigma2);
+        }
 
         const x = sinPhi * Math.cos(theta) * r3;
         const y = cosPhi * r3;
@@ -231,6 +323,45 @@ export function ManifoldField() {
         ctx!.fillStyle = `rgba(${r},${g},${b},${p.a})`;
         ctx!.fillRect(p.sx - p.s * 0.5, p.sy - p.s * 0.5, p.s, p.s);
       }
+
+      // Structure halos — soft pulses centered on each active hotspot.
+      // Projected through the same yaw/pitch so they ride the surface,
+      // and only drawn when the center is on the visible hemisphere.
+      ctx!.globalCompositeOperation = "lighter";
+      for (let k = 0; k < structures.length; k++) {
+        const env = sEnv[k];
+        if (env <= 0.02) continue;
+        const s = structures[k];
+        const rUnit = 1 + s.amp * env;
+        const x = s.sinPhi * s.cosTheta * rUnit;
+        const y = s.cosPhi * rUnit;
+        const z = s.sinPhi * s.sinTheta * rUnit;
+        const xr = x * cosY + z * sinY;
+        const zr1 = -x * sinY + z * cosY;
+        const yr = y * cosP - zr1 * sinP;
+        const zr = y * sinP + zr1 * cosP;
+        if (zr < -0.15) continue;
+        const front = Math.max(0, Math.min(1, (zr + 0.15) / 1.15));
+        const hx = cx + xr * radius;
+        const hy = cy + yr * radius;
+        const haloR = radius * (0.16 + 0.18 * env);
+        const baseA = 0.55 * env * front;
+        const grad = ctx!.createRadialGradient(hx, hy, 0, hx, hy, haloR);
+        if (s.cool) {
+          grad.addColorStop(0, `rgba(138,163,184,${baseA})`);
+          grad.addColorStop(0.55, `rgba(138,163,184,${baseA * 0.18})`);
+          grad.addColorStop(1, `rgba(138,163,184,0)`);
+        } else {
+          grad.addColorStop(0, `rgba(201,184,154,${baseA})`);
+          grad.addColorStop(0.55, `rgba(201,184,154,${baseA * 0.18})`);
+          grad.addColorStop(1, `rgba(201,184,154,0)`);
+        }
+        ctx!.fillStyle = grad;
+        ctx!.beginPath();
+        ctx!.arc(hx, hy, haloR, 0, Math.PI * 2);
+        ctx!.fill();
+      }
+      ctx!.globalCompositeOperation = "source-over";
 
     }
     rafId = requestAnimationFrame(frame);
