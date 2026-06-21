@@ -14,45 +14,47 @@ export default async function HomePage() {
       <ContourField />
       <Nav authenticated={authed} variant="public" />
 
-      <main className="relative mx-auto max-w-3xl px-5 sm:px-6 pt-20 md:pt-32">
-        {/* Hero */}
-        <section className="fade-up">
-          <div className="mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-fg-subtle)] mb-6 sm:mb-8">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] mr-3 align-middle" />
-            Frontier Research Lab · Founded {SITE.founded}
-          </div>
-          <h1 className="display-sans text-[clamp(1.75rem,7.5vw,4rem)] text-[var(--color-fg)] whitespace-nowrap">
-            {SITE.name}{" "}
-            <span className="text-[var(--color-fg-subtle)]">
-              ({SITE.shortName})
-            </span>
-          </h1>
-          <p className="lede mt-6 sm:mt-8 max-w-2xl text-[var(--color-fg-muted)]">
-            We are charting the <em>latent map</em> between intelligence and
-            reality — the high-dimensional manifold where cognition, action,
-            and the physical world meet. Our work spans artificial
-            intelligence, quantum computation, neuroscience, and physics, in
-            search of the structures that connect them.
-          </p>
-          <div className="mt-10 sm:mt-12 flex flex-wrap items-center gap-x-7 gap-y-3">
-            <Link
-              href="#thesis"
-              className="mono text-[12px] uppercase tracking-[0.1em] text-[var(--color-fg)] border-b border-[var(--color-fg)] py-2 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-colors"
-            >
-              Read the thesis ↓
-            </Link>
-            <Link
-              href="/login"
-              className="mono text-[12px] uppercase tracking-[0.1em] text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] py-2 transition-colors"
-            >
-              Researcher access →
-            </Link>
-          </div>
-        </section>
+      <main className="relative mx-auto max-w-3xl px-5 sm:px-6">
+        {/* Hero + manifold: centered viewport-fit unit on first paint */}
+        <div className="min-h-[100svh] flex flex-col justify-center pt-20 md:pt-24 pb-6 md:pb-10">
+          <section className="fade-up">
+            <div className="mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-fg-subtle)] mb-4 sm:mb-6">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] mr-3 align-middle" />
+              Frontier Research Lab · Founded {SITE.founded}
+            </div>
+            <h1 className="display-sans text-[clamp(1.75rem,7.5vw,4rem)] text-[var(--color-fg)] whitespace-nowrap">
+              {SITE.name}{" "}
+              <span className="text-[var(--color-fg-subtle)]">
+                ({SITE.shortName})
+              </span>
+            </h1>
+            <p className="lede mt-4 sm:mt-6 max-w-2xl text-[var(--color-fg-muted)]">
+              We are charting the <em>latent map</em> between intelligence and
+              reality — the high-dimensional manifold where cognition, action,
+              and the physical world meet. Our work spans artificial
+              intelligence, quantum computation, neuroscience, and physics, in
+              search of the structures that connect them.
+            </p>
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+              <Link
+                href="#thesis"
+                className="mono text-[12px] uppercase tracking-[0.1em] text-[var(--color-fg)] border-b border-[var(--color-fg)] py-2 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-colors"
+              >
+                Read the thesis ↓
+              </Link>
+              <Link
+                href="/login"
+                className="mono text-[12px] uppercase tracking-[0.1em] text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] py-2 transition-colors"
+              >
+                Researcher access →
+              </Link>
+            </div>
+          </section>
 
-        <section className="mt-12 md:mt-20 fade-up fade-up-delay-1">
-          <ManifoldField />
-        </section>
+          <section className="mt-6 sm:mt-8 fade-up fade-up-delay-1">
+            <ManifoldField />
+          </section>
+        </div>
 
         <hr className="hr-faint my-16 md:my-24" />
 

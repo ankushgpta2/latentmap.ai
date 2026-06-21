@@ -90,19 +90,20 @@ export function MobileNav({
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="md:hidden fixed inset-x-0 top-14 bottom-0 z-40 bg-[color:var(--color-bg)]/95 backdrop-blur-xl flex flex-col animate-[lml-fade-up_220ms_cubic-bezier(.19,1,.22,1)_both]"
+          className="md:hidden fixed inset-0 z-40 bg-[var(--color-bg)] flex flex-col pt-14 animate-[lml-fade-up_220ms_cubic-bezier(.19,1,.22,1)_both]"
           onClick={(e) => {
             // Close if user taps the empty space outside the link list.
             if (e.target === e.currentTarget) setOpen(false);
           }}
         >
           <nav className="flex flex-col gap-0 px-6 pt-6 pb-2">
-            {links.map((l) => (
+            {links.map((l, i) => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="py-5 text-[22px] text-[var(--color-fg)] border-b border-[var(--color-border)] active:text-[var(--color-accent)] transition-colors"
+                style={{ animationDelay: `${60 + i * 50}ms` }}
+                className="py-5 text-[22px] text-[var(--color-fg)] border-b border-[var(--color-border)] active:text-[var(--color-accent)] transition-colors animate-[lml-fade-up_360ms_cubic-bezier(.19,1,.22,1)_both]"
               >
                 {l.label}
               </Link>

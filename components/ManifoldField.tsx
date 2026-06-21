@@ -383,10 +383,10 @@ export function ManifoldField() {
   }, []);
 
   return (
-    <figure className="my-4 select-none">
+    <figure className="my-0 select-none">
       <div
         ref={containerRef}
-        className="relative w-full aspect-square max-w-[640px] mx-auto"
+        className="relative aspect-square mx-auto w-[min(640px,48vh,100%)]"
       >
         <canvas
           ref={canvasRef}
@@ -394,7 +394,7 @@ export function ManifoldField() {
           aria-hidden="true"
         />
       </div>
-      <figcaption className="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-subtle)] text-center mt-6">
+      <figcaption className="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-subtle)] text-center mt-4">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] mr-3 align-middle" />
         Latent surface — interact to perturb
       </figcaption>
