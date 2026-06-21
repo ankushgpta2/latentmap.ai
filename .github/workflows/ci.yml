@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - name: Build (with placeholder env)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://www.latentmap.ai
+          NEXT_PUBLIC_CANONICAL_HOST: www.latentmap.ai
+          # CI uses placeholder secrets; production values live only in Vercel.
+          INVITE_CODE_HASH: 0000000000000000000000000000000000000000000000000000000000000000
+          SESSION_SECRET: ci-placeholder-secret-not-used-anywhere-real-must-be-32-chars-long
